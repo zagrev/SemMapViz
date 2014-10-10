@@ -1,0 +1,3 @@
+Version information for: %%APPLICATION%%
+Version:                 %%VERSION%%
+Built on:                %%BUILD%%

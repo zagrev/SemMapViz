@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry exported="true" kind="lib" path="lib/asm-3.3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/asm-all-repackaged-2.2.0-b21.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/cglib-2.2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/grizzly-framework-2.3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/grizzly-http-2.3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/grizzly-http-server-2.3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/grizzly-rcm-2.3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/guava-14.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hk2-api-2.2.0-b21.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hk2-locator-2.2.0-b21.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hk2-utils-2.2.0-b21.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javax.annotation-api-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javax.inject-2.2.0-b21.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/javax.ws.rs-api-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jersey-client-2.4.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jersey-common-2.4.1.jar" sourcepath="C:/Users/sbetts/.m2/repository/org/glassfish/jersey/core/jersey-common/2.4.1/jersey-common-2.4.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jersey-container-grizzly2-http-2.4.1.jar" sourcepath="C:/Users/sbetts/.m2/repository/org/glassfish/jersey/containers/jersey-container-grizzly2-http/2.4.1/jersey-container-grizzly2-http-2.4.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jersey-entity-filtering-2.4.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jersey-media-moxy-2.4.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jersey-server-2.4.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/validation-api-1.1.0.Final.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.persistence.moxy-2.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.persistence.antlr-2.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.persistence.asm-2.5.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/org.eclipse.persistence.core-2.5.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
