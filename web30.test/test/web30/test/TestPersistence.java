@@ -13,6 +13,9 @@ import web30.persistence.PooledEntityManager;
  */
 public class TestPersistence
 {
+   /**
+    * verify that the entity manager successfully maps all the persisted objects
+    */
    @Test
    public void testCreateEntityManager()
    {
