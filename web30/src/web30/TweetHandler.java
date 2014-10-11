@@ -4,6 +4,7 @@
 package web30;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.TypedQuery;
 import javax.ws.rs.GET;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
+import web30.model.TwitterStream;
 import web30.persistence.EntityManagerPool;
 import web30.persistence.PooledEntityManager;
 
@@ -91,6 +93,7 @@ public class TweetHandler
     * @return the tweets for the given location and time
     */
    @GET
+   @Produces(MediaType.APPLICATION_JSON)
    public Response getTweets(@QueryParam("north") final Double northParam,
          @QueryParam("south") final Double southParam, @QueryParam("east") final Double eastParam,
          @QueryParam("west") final Double westParam, @QueryParam("mindate") final Date minDateParam,
@@ -121,7 +124,7 @@ public class TweetHandler
       }
 
       // make sure the min is less than the max
-      if (north.doubleValue() > south.doubleValue())
+      if (north.doubleValue() < south.doubleValue())
       {
          final Double temp = north;
          north = south;
@@ -157,9 +160,8 @@ public class TweetHandler
       try (PooledEntityManager em = EntityManagerPool.borrowEntityManager())
       {
          final String countQuery = "select count(1) from TwitterStream t ";
-         final String selectQuery = "select t from TwitterStream t ";
-         final String where = "where t.lon > :minLon and t.lon < :maxLon "
-               + "and t.lat > :minLat and t.lat < :maxLat and t.time > :minTime and t.time < :maxTime ";
+         final String where = "where t.lon > :minLon and t.lon < :maxLon and t.lat > :minLat and t.lat < :maxLat "
+               + "and t.time > :minTime and t.time < :maxTime ";
 
          // first find out how many records we are going to get
          final TypedQuery<Long> qCount = em.createQuery(countQuery + where, Long.class);
@@ -169,20 +171,36 @@ public class TweetHandler
          qCount.setParameter("maxLat", north);
          qCount.setParameter("minTime", minDate);
          qCount.setParameter("maxTime", maxDate);
-         qCount.setMaxResults(1000);
 
          if (log.isDebugEnabled())
          {
             log.debug("count query = " + countQuery + where);
             log.debug("minLon = " + west + ", maxLon = " + east);
-            log.debug("minLat =  = " + north + ", maxLat = " + south);
+            log.debug("minLat = " + south + ", maxLat = " + north);
             log.debug("minTime = " + minDate + ", maxTime = " + maxDate);
          }
          final Long total = qCount.getSingleResult();
 
          log.debug("found " + total + " records");
 
-         return Response.ok("not done").build();
+         final String selectQuery = "select t from TwitterStream t ";
+         final TypedQuery<TwitterStream> qRetrieve = em.createQuery(selectQuery + where, TwitterStream.class);
+         qRetrieve.setParameter("minLon", west);
+         qRetrieve.setParameter("maxLon", east);
+         qRetrieve.setParameter("minLat", south);
+         qRetrieve.setParameter("maxLat", north);
+         qRetrieve.setParameter("minTime", minDate);
+         qRetrieve.setParameter("maxTime", maxDate);
+         qRetrieve.setMaxResults(1000);
+
+         final List<TwitterStream> list = qRetrieve.getResultList();
+
+         final Tweets results = new Tweets();
+         results.setOffset(0);
+         results.setTotal(total.longValue());
+         results.setTweet(list);
+
+         return Response.ok(results).build();
       }
       catch (final Throwable t)
       {
