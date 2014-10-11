@@ -1,0 +1,50 @@
+@CHARSET "ISO-8859-1";
+
+table {
+	text-align: center;
+}
+
+#time-label>div,#time-label>div>div {
+	display: inline;
+}
+
+#time-label #currentDate {
+	display: block;
+}
+
+#slider-wrapper {
+	position: relative;
+}
+
+.map {
+	height: 650px;
+	width: 100%;
+}
+
+.header {
+	font-weight: bold;
+}
+
+.date {
+	
+}
+/**
+ * The zoomslider in the second map shall be placed between the zoom-in and
+ * zoom-out buttons.
+ */
+.ol-zoom .ol-zoom-out {
+	margin-top: 202px;
+}
+
+.ol-zoomslider {
+	background-color: transparent;
+	top: 2.3em;
+}
+
+.ol-touch .ol-zoom .ol-zoom-out {
+	margin-top: 212px;
+}
+
+.ol-touch .ol-zoomslider {
+	top: 2.75em;
+}

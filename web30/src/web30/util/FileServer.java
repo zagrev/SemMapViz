@@ -100,7 +100,7 @@ public class FileServer
    public Response getFile(@PathParam("path") final String path,
          @HeaderParam(HttpHeaders.IF_MODIFIED_SINCE) final Date ifModifiedSince, @Context final UriInfo uriInfo)
    {
-      log.debug("getFile from " + uriInfo.getRequestUri().toString());
+      log.trace("getFile from " + uriInfo.getRequestUri().toString());
 
       final Response response;
       sanitizedPath = path;

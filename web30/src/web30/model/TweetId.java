@@ -4,6 +4,7 @@
 package web30.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * the composite key class
@@ -17,7 +18,7 @@ public class TweetId implements Serializable
    private String tweetid;
 
    /** the time */
-   private String time;
+   private Date time;
 
    /*
     * (non-Javadoc)
@@ -67,7 +68,7 @@ public class TweetId implements Serializable
    /**
     * @return the time
     */
-   public String getTime()
+   public Date getTime()
    {
       return time;
    }
@@ -98,7 +99,7 @@ public class TweetId implements Serializable
     * @param time
     *           the time to set
     */
-   public void setTime(final String time)
+   public void setTime(final Date time)
    {
       this.time = time;
    }

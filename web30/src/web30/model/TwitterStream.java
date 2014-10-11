@@ -1,8 +1,8 @@
 package web30.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -26,18 +26,17 @@ public class TwitterStream implements Serializable
    private String boundingbox;
 
    /** the latitude */
-   private String lat;
+   private Double lat;
 
    /** the longitude */
-   @Column(name = "long")
-   private String lon;
+   private Double lon;
 
    /** the tweet */
    private String text;
 
    /** the time of the tweet */
    @Id
-   private String time;
+   private Date time;
 
    /** the id of the tweet */
    @Id
@@ -64,7 +63,7 @@ public class TwitterStream implements Serializable
    /**
     * @return the latitude
     */
-   public String getLat()
+   public Double getLat()
    {
       return this.lat;
    }
@@ -72,7 +71,7 @@ public class TwitterStream implements Serializable
    /**
     * @return the longitude
     */
-   public String getLon()
+   public Double getLon()
    {
       return this.lon;
    }
@@ -88,7 +87,7 @@ public class TwitterStream implements Serializable
    /**
     * @return the time
     */
-   public String getTime()
+   public Date getTime()
    {
       return this.time;
    }
@@ -120,17 +119,17 @@ public class TwitterStream implements Serializable
    /**
     * @param lat
     */
-   public void setLat(final String lat)
+   public void setLat(final Double lat)
    {
       this.lat = lat;
    }
 
    /**
-    * @param long_
+    * @param lon
     */
-   public void setLon(final String long_)
+   public void setLon(final Double lon)
    {
-      this.lon = long_;
+      this.lon = lon;
    }
 
    /**
@@ -144,7 +143,7 @@ public class TwitterStream implements Serializable
    /**
     * @param time
     */
-   public void setTime(final String time)
+   public void setTime(final Date time)
    {
       this.time = time;
    }
