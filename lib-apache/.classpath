@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.17.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-cli-1.2.jar" sourcepath="C:/Users/sbetts/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-io-2.4.jar"/>
