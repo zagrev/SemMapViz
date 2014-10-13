@@ -1,7 +1,7 @@
 /**
  * 
  */
-package web30.test;
+package web30;
 
 import org.junit.Test;
 

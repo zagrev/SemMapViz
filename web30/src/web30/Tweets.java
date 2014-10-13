@@ -77,4 +77,21 @@ public class Tweets
    {
       this.tweet = tweet;
    }
+
+   /*
+    * (non-Javadoc)
+    * @see java.lang.Object#toString()
+    */
+   @Override
+   public String toString()
+   {
+      final StringBuilder b = new StringBuilder("Tweets [total=" + total + ", offset=" + offset + ", tweets = ");
+      for (final TwitterStream curTweet : getTweet())
+      {
+         b.append("\n");
+         b.append(curTweet.toString());
+      }
+      b.append("\n]");
+      return b.toString();
+   }
 }

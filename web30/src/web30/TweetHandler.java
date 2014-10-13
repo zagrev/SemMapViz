@@ -4,6 +4,7 @@
 package web30;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -84,93 +85,61 @@ public class TweetHandler
    }
 
    /**
-    * @param northParam
-    * @param southParam
-    * @param eastParam
-    * @param westParam
-    * @param minDateParam
-    * @param maxDateParam
+    * @param north
+    * @param south
+    * @param east
+    * @param west
+    * @param minDate
+    * @param maxDate
     * @return the tweets for the given location and time
     */
    @GET
    @Produces(MediaType.APPLICATION_JSON)
-   public Response getTweets(@QueryParam("north") final Double northParam,
-         @QueryParam("south") final Double southParam, @QueryParam("east") final Double eastParam,
-         @QueryParam("west") final Double westParam, @QueryParam("mindate") final Date minDateParam,
-         @QueryParam("maxdate") final Date maxDateParam)
+   public Response getTweets(@QueryParam("north") final Double north, @QueryParam("south") final Double south,
+         @QueryParam("east") final Double east, @QueryParam("west") final Double west,
+         @QueryParam("mindate") final Date minDate, @QueryParam("maxdate") final Date maxDate)
    {
       log.debug("getTweets");
-      Double north = northParam;
-      Double south = southParam;
-      Double east = eastParam;
-      Double west = westParam;
+      final long startTime = System.currentTimeMillis();
+      final HashMap<String, Object> params = new HashMap<>();
 
-      // make sure all the parameters are set to something useful
-      if (north == null)
+      String where = "where 1=1 ";
+
+      // make sure all the parameters are set to something useful.
+      // NOTE the db has lat and lon backwards
+      if (north != null || south != null)
       {
-         north = Double.valueOf(90.0);
-      }
-      if (south == null)
-      {
-         south = Double.valueOf(-90.0);
-      }
-      if (east == null)
-      {
-         east = Double.valueOf(180.0);
-      }
-      if (west == null)
-      {
-         west = Double.valueOf(-180.0);
+         log.debug("t.lon between " + south + " and " + north);
+         where += "and t.lon between :south and :north ";
+         params.put("south", south == null ? Double.valueOf(-90.0) : south);
+         params.put("north", north == null ? Double.valueOf(90.0) : north);
       }
 
-      // make sure the min is less than the max
-      if (north.doubleValue() < south.doubleValue())
+      if (east != null || west != null)
       {
-         final Double temp = north;
-         north = south;
-         south = temp;
+         where += "and t.lat between :west and :east ";
+         params.put("east", east == null ? Double.valueOf(180.0) : east);
+         params.put("west", west == null ? Double.valueOf(-180.0) : west);
       }
 
-      if (west.doubleValue() > east.doubleValue())
+      if (minDate != null || maxDate != null)
       {
-         final Double temp = east;
-         east = west;
-         west = temp;
-      }
-
-      Date minDate = minDateParam;
-      Date maxDate = maxDateParam;
-
-      if (minDate == null)
-      {
-         minDate = new Date(0);
-      }
-      if (maxDate == null)
-      {
-         maxDate = new Date();
-      }
-
-      if (minDate.getTime() > maxDate.getTime())
-      {
-         final Date temp = minDate;
-         minDate = maxDate;
-         maxDate = temp;
+         where += "and t.time between :minTime and  :maxTime ";
+         params.put("minTime", minDate == null ? new Date(0) : minDate);
+         params.put("maxTime", maxDate == null ? new Date() : maxDate);
       }
 
       try (PooledEntityManager em = EntityManagerPool.borrowEntityManager())
       {
+         // NOTE lat and lon are backward in this silly db
          final String countQuery = "select count(1) from TwitterStream t ";
-         final String where = "where t.lon > :minLon and t.lon < :maxLon and t.lat > :minLat and t.lat < :maxLat "
-               + "and t.time > :minTime and t.time < :maxTime ";
 
          // first find out how many records we are going to get
          final TypedQuery<Long> qCount = em.createQuery(countQuery + where, Long.class);
-         qCount.setParameter("minLon", west);
-         qCount.setParameter("maxLon", east);
-         qCount.setParameter("minLat", south);
-         qCount.setParameter("maxLat", north);
-         qCount.setParameter("minTime", minDate);
-         qCount.setParameter("maxTime", maxDate);
+         for (final String param : params.keySet())
+         {
+            qCount.setParameter(param, params.get(param));
+         }
 
          if (log.isDebugEnabled())
          {
@@ -181,16 +150,15 @@ public class TweetHandler
          }
          final Long total = qCount.getSingleResult();
 
-         log.debug("found " + total + " records");
+         logTime("count", startTime);
+         log.debug(String.format("found %,d records", total));
 
          final String selectQuery = "select t from TwitterStream t ";
          final TypedQuery<TwitterStream> qRetrieve = em.createQuery(selectQuery + where, TwitterStream.class);
-         qRetrieve.setParameter("minLon", west);
-         qRetrieve.setParameter("maxLon", east);
-         qRetrieve.setParameter("minLat", south);
-         qRetrieve.setParameter("maxLat", north);
-         qRetrieve.setParameter("minTime", minDate);
-         qRetrieve.setParameter("maxTime", maxDate);
+         for (final String param : params.keySet())
+         {
+            qRetrieve.setParameter(param, params.get(param));
+         }
          qRetrieve.setMaxResults(1000);
 
          final List<TwitterStream> list = qRetrieve.getResultList();
@@ -207,5 +175,22 @@ public class TweetHandler
          log.error("Cannot get the time range", t);
          return Response.serverError().entity("Times are currently unavailable").build();
       }
+      finally
+      {
+         logTime("total", startTime);
+
+      }
+   }
+
+   /**
+    * @param label
+    *           TODO
+    * @param startTime
+    */
+   private void logTime(final String label, final long startTime)
+   {
+      final long endTime = System.currentTimeMillis();
+      final double d = (endTime - startTime) / 1000.0;
+      log.debug(String.format("%s time = %.2f seconds", label, Double.valueOf(d)));
    }
 }

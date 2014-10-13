@@ -164,4 +164,15 @@ public class TwitterStream implements Serializable
       this.userid = userid;
    }
 
+   /*
+    * (non-Javadoc)
+    * @see java.lang.Object#toString()
+    */
+   @Override
+   public String toString()
+   {
+      return "TwitterStream [userid=" + userid + ", lat=" + lat + ", lon=" + lon + ", time=" + time + ", text=" + text
+            + ", tweetid=" + tweetid + ", boundingbox=" + boundingbox + "]";
+   }
+
 }

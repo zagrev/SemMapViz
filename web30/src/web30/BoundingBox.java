@@ -13,6 +13,7 @@ public class BoundingBox
 {
    /** the top of the box */
    private double north;
+
    /** the right side of the box */
    private double east;
    /** the left side of the box */
@@ -107,5 +108,15 @@ public class BoundingBox
    public void setWest(final double west)
    {
       this.west = west;
+   }
+
+   /*
+    * (non-Javadoc)
+    * @see java.lang.Object#toString()
+    */
+   @Override
+   public String toString()
+   {
+      return "BoundingBox [north=" + north + ", south=" + south + ", east=" + east + ", west=" + west + "]";
    }
 }

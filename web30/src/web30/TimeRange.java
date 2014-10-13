@@ -15,6 +15,7 @@ public class TimeRange
 {
    /** the earliest time a tweet is available */
    private Date minTime;
+
    /** the latest time a tweet is available */
    private Date maxTime;
 
@@ -70,6 +71,16 @@ public class TimeRange
    public void setMinTime(final Date minTime)
    {
       this.minTime = minTime;
+   }
+
+   /*
+    * (non-Javadoc)
+    * @see java.lang.Object#toString()
+    */
+   @Override
+   public String toString()
+   {
+      return "TimeRange [minTime=" + minTime + ", maxTime=" + maxTime + "]";
    }
 
 }
